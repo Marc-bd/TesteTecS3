@@ -1,7 +1,8 @@
+import "express-async-errors";
+import "reflect-metadata";
 import express from "express";
 import { appRoutes } from "./routes";
-import { errorMiddleware } from "./middlewares/error.middleware";
-import { Request, Response } from "express";
+import { handleErrorMiddleware } from "./middlewares/error.middleware";
 
 const app = express();
 
@@ -9,12 +10,6 @@ app.use(express.json());
 
 appRoutes(app);
 
-app.get("/", (req: Request, res: Response) => {
-	res.status(200).json({
-		message: "Hello World",
-	});
-});
+app.use(handleErrorMiddleware);
 
-app.use(errorMiddleware);
-
-app.listen(3333);
+app.listen(3333, () => console.log("Server is running!"));
