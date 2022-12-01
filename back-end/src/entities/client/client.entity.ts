@@ -3,9 +3,11 @@ import {
 	Column,
 	CreateDateColumn,
 	Entity,
+	OneToMany,
 	PrimaryGeneratedColumn,
 } from "typeorm";
 import { v4 as uuid } from "uuid";
+import { Contact } from "../contacts/contact.entity";
 
 @Entity("client")
 export class Client {
@@ -30,6 +32,11 @@ export class Client {
 
 	@Column({ default: true })
 	isActive: boolean;
+
+	@OneToMany((type) => Contact, (contact) => contact.client, {
+		eager: true,
+	})
+	contact: Contact[];
 
 	constructor() {
 		if (!this.id) {
